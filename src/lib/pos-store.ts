@@ -10,8 +10,8 @@ export interface Product {
   sku: string;
   category: string;
   baseUnit: BaseUnit;
-  packName?: string;
-  packSize?: number;
+  packName?: string | undefined;
+  packSize?: number | undefined;
   retailPrice: number; // paisa per base unit
   wholesalePrice: number;
   costPrice: number;
@@ -33,7 +33,7 @@ export interface Sale {
   id: string;
   invoiceNo: string;
   timestamp: number;
-  customerName?: string;
+  customerName?: string | undefined;
   priceTier: PriceTier;
   items: SaleItem[];
   subtotal: number;
@@ -42,8 +42,8 @@ export interface Sale {
   total: number;
   paymentMethod: PaymentMethod;
   amountPaid: number;
-  tendered?: number;
-  change?: number;
+  tendered?: number | undefined;
+  change?: number | undefined;
   status: "completed";
 }
 

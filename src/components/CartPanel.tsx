@@ -21,7 +21,7 @@ interface Props {
   updateLine: (i: number, patch: Partial<CartLine>) => void;
   removeLine: (i: number) => void;
   onCheckout: () => void;
-  error?: string;
+  error?: string | undefined;
 }
 
 export function CartPanel(p: Props) {
