@@ -17,7 +17,7 @@ const toForm = (p?: Product): Form => ({
   cost: p ? String(p.costPrice / 100) : "", stock: p ? String(p.stock) : "",
 });
 
-export function ProductFormDialog({ open, onOpenChange, product }: { open: boolean; onOpenChange: (v: boolean) => void; product?: Product }) {
+export function ProductFormDialog({ open, onOpenChange, product }: { open: boolean; onOpenChange: (v: boolean) => void; product?: Product | undefined }) {
   const [f, setF] = useState<Form>(toForm(product));
   const [err, setErr] = useState("");
   useEffect(() => { if (open) { setF(toForm(product)); setErr(""); } }, [open, product]);
