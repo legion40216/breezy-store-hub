@@ -78,7 +78,7 @@ function Dashboard() {
               <XAxis dataKey="label" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
               <YAxis tick={{ fontSize: 10 }} />
               <Tooltip formatter={(v: number) => m(v * 100)} />
-              <Bar dataKey="revenue" fill="var(--primary)" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="revenue" fill="var(--primary)" radius={[3, 3, 0, 0]} isAnimationActive={false} />
             </BarChart>
           </ResponsiveContainer>
         </div>
