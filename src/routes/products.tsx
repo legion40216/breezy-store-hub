@@ -50,9 +50,9 @@ function Products() {
           </thead>
           <tbody>
             {list.map((p) => (
-              <tr key={p.id} className={`border-t border-border ${p.stock <= lowStockThreshold ? "bg-warning/15" : ""}`}>
+              <tr key={p.id} onClick={() => setViewing(p)} className={`cursor-pointer border-t border-border hover:bg-muted/60 ${p.stock <= lowStockThreshold ? "bg-warning/15" : ""}`}>
                 <td className="p-2 font-medium">
-                  {p.name}
+                  <span className="text-primary underline-offset-2 hover:underline">{p.name}</span>
                   {p.packName && <div className="text-xs text-muted-foreground">{p.packName} of {p.packSize}</div>}
                 </td>
                 <td className="p-2 text-muted-foreground">{p.sku}</td>
