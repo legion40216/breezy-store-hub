@@ -72,13 +72,13 @@ function Dashboard() {
       )}
 
       <Card title="Revenue — last 14 days">
-        <div className="h-48 w-full">
+        <div className="h-48 w-full text-primary">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data.daily} margin={{ left: -16, right: 4, top: 4 }}>
               <XAxis dataKey="label" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
               <YAxis tick={{ fontSize: 10 }} />
               <Tooltip formatter={(v: number) => m(v * 100)} />
-              <Bar dataKey="revenue" fill="var(--primary)" radius={[3, 3, 0, 0]} isAnimationActive={false} />
+              <Bar dataKey="revenue" fill="currentColor" radius={[3, 3, 0, 0]} isAnimationActive={false} />
             </BarChart>
           </ResponsiveContainer>
         </div>
