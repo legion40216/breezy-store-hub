@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, Package, Settings, ShoppingCart } from "lucide-react";
+import { BarChart3, LayoutDashboard, Package, Settings, ShoppingCart } from "lucide-react";
 
 const links = [
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/", label: "Checkout", icon: ShoppingCart },
   { to: "/products", label: "Products", icon: Package },
   { to: "/reports", label: "Reports", icon: BarChart3 },

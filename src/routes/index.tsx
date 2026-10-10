@@ -13,6 +13,7 @@ import {
 } from "@/lib/pos-store";
 import { money, fmtQty } from "@/lib/currency";
 import { ProductCard } from "@/components/ProductCard";
+import { catColor } from "@/lib/category-colors";
 import { CartPanel } from "@/components/CartPanel";
 import { InvoiceView } from "@/components/InvoiceView";
 import { Input } from "@/components/ui/input";
@@ -168,8 +169,9 @@ function Checkout() {
               <button
                 key={c}
                 onClick={() => setCat(c)}
-                className={`shrink-0 rounded-full border px-3 py-1 text-xs font-medium ${cat === c ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card"}`}
+                className={`flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${cat === c ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card"}`}
               >
+                {c !== "All" && <span className={`h-2.5 w-2.5 rounded-full ${catColor(c).bg}`} />}
                 {c}
               </button>
             ))}

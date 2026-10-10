@@ -48,6 +48,14 @@
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --color-ink: var(--ink);
+  --color-cat-1: var(--cat-1);
+  --color-cat-2: var(--cat-2);
+  --color-cat-3: var(--cat-3);
+  --color-cat-4: var(--cat-4);
+  --color-cat-5: var(--cat-5);
+  --color-cat-6: var(--cat-6);
+  --color-cat-foreground: var(--cat-foreground);
+
   --color-ink-foreground: var(--ink-foreground);
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -71,6 +79,13 @@
 
 :root {
   --radius: 0.5rem;
+  --cat-1: oklch(0.62 0.15 55);
+  --cat-2: oklch(0.58 0.13 230);
+  --cat-3: oklch(0.58 0.13 160);
+  --cat-4: oklch(0.6 0.15 340);
+  --cat-5: oklch(0.55 0.13 290);
+  --cat-6: oklch(0.6 0.12 110);
+  --cat-foreground: oklch(0.99 0 0);
   --background: oklch(0.975 0.008 85);
   --foreground: oklch(0.2 0.02 60);
   --card: oklch(0.995 0.004 85);
