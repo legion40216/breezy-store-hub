@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, Package, Settings, ShoppingCart } from "lucide-react";
+import { BarChart3, LayoutDashboard, Package, Settings, ShoppingCart } from "lucide-react";
 
 const links = [
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/", label: "Checkout", icon: ShoppingCart },
   { to: "/products", label: "Products", icon: Package },
   { to: "/reports", label: "Reports", icon: BarChart3 },
@@ -21,7 +22,7 @@ export function Nav() {
               key={to}
               to={to}
               activeOptions={{ exact: true }}
-              className="flex flex-col items-center gap-0.5 rounded-md px-3 py-1.5 text-xs font-medium opacity-70 transition hover:opacity-100 sm:flex-row sm:gap-2 sm:text-sm"
+              className="flex flex-col items-center gap-0.5 rounded-md px-2 py-1.5 text-xs sm:px-3 font-medium opacity-70 transition hover:opacity-100 sm:flex-row sm:gap-2 sm:text-sm"
               activeProps={{ className: "!opacity-100 bg-primary text-primary-foreground" }}
             >
               <Icon className="h-4 w-4" />
