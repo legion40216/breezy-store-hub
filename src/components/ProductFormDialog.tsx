@@ -3,10 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { type BaseUnit, type Product, saveProduct, uid, usePos } from "@/lib/pos-store";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Check, ChevronsUpDown, Plus } from "lucide-react";
+import { type BaseUnit, type Product, saveProduct, uid } from "@/lib/pos-store";
 
 interface Form {
   name: string; sku: string; category: string; baseUnit: BaseUnit;
@@ -23,11 +20,6 @@ const toForm = (p?: Product): Form => ({
 export function ProductFormDialog({ open, onOpenChange, product }: { open: boolean; onOpenChange: (v: boolean) => void; product?: Product | undefined }) {
   const [f, setF] = useState<Form>(toForm(product));
   const [err, setErr] = useState("");
-  const s = usePos();
-  const categories = [...new Set((s?.products ?? []).map((p) => p.category))].sort((a, b) => a.localeCompare(b));
-  const [catOpen, setCatOpen] = useState(false);
-  const [catQuery, setCatQuery] = useState("");
-  const pickCat = (c: string) => { setF((prev) => ({ ...prev, category: c })); setCatQuery(""); setCatOpen(false); };
   useEffect(() => { if (open) { setF(toForm(product)); setErr(""); } }, [open, product]);
   const set = (k: keyof Form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setF({ ...f, [k]: e.target.value });
 
@@ -61,40 +53,7 @@ export function ProductFormDialog({ open, onOpenChange, product }: { open: boole
         <form onSubmit={submit} className="grid grid-cols-2 gap-3">
           <div className="col-span-2">{field("name", "Name")}</div>
           {field("sku", "SKU")}
-          <div className="space-y-1">
-            <Label htmlFor="category">Category</Label>
-            <Popover open={catOpen} onOpenChange={setCatOpen}>
-              <PopoverTrigger asChild>
-                <Button id="category" type="button" variant="outline" role="combobox" aria-expanded={catOpen} className="h-9 w-full justify-between px-3 font-normal">
-                  <span className={f.category ? "truncate" : "truncate text-muted-foreground"}>{f.category || "Choose or type"}</span>
-                  <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-60 p-0" align="start">
-                <Command>
-                  <CommandInput placeholder="Search or type new..." value={catQuery} onValueChange={setCatQuery} />
-                  <CommandList>
-                    <CommandEmpty>No categories yet.</CommandEmpty>
-                    {catQuery.trim() && !categories.some((c) => c.toLowerCase() === catQuery.trim().toLowerCase()) && (
-                      <CommandGroup heading="New">
-                        <CommandItem value={`__new__${catQuery}`} onSelect={() => pickCat(catQuery.trim())}>
-                          <Plus className="mr-2 h-4 w-4" /> Create "{catQuery.trim()}"
-                        </CommandItem>
-                      </CommandGroup>
-                    )}
-                    <CommandGroup heading="Existing">
-                      {categories.map((c) => (
-                        <CommandItem key={c} value={c} onSelect={() => pickCat(c)}>
-                          <Check className={f.category === c ? "mr-2 h-4 w-4" : "mr-2 h-4 w-4 opacity-0"} />
-                          {c}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
-          </div>
+          {field("category", "Category")}
           <div className="space-y-1">
             <Label htmlFor="baseUnit">Base unit</Label>
             <select id="baseUnit" value={f.baseUnit} onChange={set("baseUnit")} className="h-9 w-full rounded-md border border-input bg-background px-2 text-sm">
