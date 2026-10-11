@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { PosState, Product, Sale } from "@/lib/pos-store";
+import { initialStockOf, type PosState, type Product, type Sale } from "@/lib/pos-store";
 import { money, fmtQty } from "@/lib/currency";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,8 @@ export function ProductDetailsDialog({
   if (!product || !stats) return null;
   const low = product.stock <= state.settings.lowStockThreshold;
   const margin = stats.revenue ? Math.round((stats.profit / stats.revenue) * 100) : 0;
+  const initial = initialStockOf(product, state.sales);
+  const soldPct = initial > 0 ? Math.min(100, Math.round((stats.qty / initial) * 100)) : 0;
   const stat = (label: string, value: string) => (
     <div className="rounded-md border border-border bg-muted/40 p-2">
       <div className="text-xs text-muted-foreground">{label}</div>
@@ -57,6 +59,22 @@ export function ProductDetailsDialog({
               {product.packName && ` · ${product.packName} of ${product.packSize} ${product.baseUnit}`}
             </p>
           </DialogHeader>
+
+          <section className="space-y-2">
+            <h3 className="text-sm font-semibold">Initial status</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {stat("Started with", `${fmtQty(initial)} ${product.baseUnit}`)}
+              {stat("Initial value (cost)", m(Math.round(initial * product.costPrice)))}
+            </div>
+            <div className="space-y-1">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                <div className="h-full rounded-full bg-primary" style={{ width: `${soldPct}%` }} />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {soldPct}% sold · {fmtQty(Math.max(0, initial - stats.qty))} {product.baseUnit} remaining of original stock
+              </p>
+            </div>
+          </section>
 
           <section className="space-y-2">
             <h3 className="text-sm font-semibold">Stock</h3>

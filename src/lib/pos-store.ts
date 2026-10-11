@@ -16,6 +16,7 @@ export interface Product {
   wholesalePrice: number;
   costPrice: number;
   stock: number; // base units
+  initialStock?: number; // base units at first entry; falls back to stock + sold
 }
 
 export interface SaleItem {
@@ -90,6 +91,7 @@ export function seedProducts(): Product[] {
     wholesalePrice: wholesale * 100,
     costPrice: cost * 100,
     stock,
+    initialStock: stock,
     packName,
     packSize,
   });
@@ -172,6 +174,16 @@ export function usePos(): PosState | null {
 export const formatInvoice = (n: number) => `INV-${String(n).padStart(4, "0")}`;
 
 // ---- Products ----
+/** Starting stock in base units; falls back to current stock + total sold for older records. */
+export function initialStockOf(p: Product, sales: Sale[]): number {
+  if (p.initialStock != null) return p.initialStock;
+  const sold = sales.reduce(
+    (a, s) => a + s.items.filter((i) => i.productId === p.id).reduce((x, i) => x + i.qtyInBaseUnits, 0),
+    0,
+  );
+  return p.stock + sold;
+}
+
 export function saveProduct(p: Product) {
   setState((s) => {
     const exists = s.products.some((x) => x.id === p.id);
