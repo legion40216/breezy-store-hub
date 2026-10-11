@@ -61,6 +61,22 @@ export function ProductDetailsDialog({
           </DialogHeader>
 
           <section className="space-y-2">
+            <h3 className="text-sm font-semibold">Initial status</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {stat("Started with", `${fmtQty(initial)} ${product.baseUnit}`)}
+              {stat("Initial value (cost)", m(Math.round(initial * product.costPrice)))}
+            </div>
+            <div className="space-y-1">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                <div className="h-full rounded-full bg-primary" style={{ width: `${soldPct}%` }} />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {soldPct}% sold · {fmtQty(Math.max(0, initial - stats.qty))} {product.baseUnit} remaining of original stock
+              </p>
+            </div>
+          </section>
+
+          <section className="space-y-2">
             <h3 className="text-sm font-semibold">Stock</h3>
             <div className="grid grid-cols-2 gap-2">
               {stat("In stock", `${fmtQty(product.stock)} ${product.baseUnit}`)}
