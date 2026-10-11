@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { type BaseUnit, type Product, saveProduct, uid } from "@/lib/pos-store";
+import { type BaseUnit, type Product, saveProduct, uid, usePos } from "@/lib/pos-store";
 
 interface Form {
   name: string; sku: string; category: string; baseUnit: BaseUnit;
@@ -20,6 +20,8 @@ const toForm = (p?: Product): Form => ({
 export function ProductFormDialog({ open, onOpenChange, product }: { open: boolean; onOpenChange: (v: boolean) => void; product?: Product | undefined }) {
   const [f, setF] = useState<Form>(toForm(product));
   const [err, setErr] = useState("");
+  const s = usePos();
+  const categories = [...new Set((s?.products ?? []).map((p) => p.category))].sort((a, b) => a.localeCompare(b));
   useEffect(() => { if (open) { setF(toForm(product)); setErr(""); } }, [open, product]);
   const set = (k: keyof Form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setF({ ...f, [k]: e.target.value });
 
@@ -53,7 +55,15 @@ export function ProductFormDialog({ open, onOpenChange, product }: { open: boole
         <form onSubmit={submit} className="grid grid-cols-2 gap-3">
           <div className="col-span-2">{field("name", "Name")}</div>
           {field("sku", "SKU")}
-          {field("category", "Category")}
+          <div className="space-y-1">
+            <Label htmlFor="category">Category</Label>
+            <Input id="category" list="category-options" placeholder="Pick existing or type new" value={f.category} onChange={set("category")} />
+            <datalist id="category-options">
+              {categories.map((c) => (
+                <option key={c} value={c} />
+              ))}
+            </datalist>
+          </div>
           <div className="space-y-1">
             <Label htmlFor="baseUnit">Base unit</Label>
             <select id="baseUnit" value={f.baseUnit} onChange={set("baseUnit")} className="h-9 w-full rounded-md border border-input bg-background px-2 text-sm">
