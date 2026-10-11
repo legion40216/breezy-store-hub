@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LowStockBadge } from "@/components/LowStockBadge";
 import { ProductFormDialog } from "@/components/ProductFormDialog";
+import { ProductDetailsDialog } from "@/components/ProductDetailsDialog";
 
 export const Route = createFileRoute("/products")({
   head: () => ({
@@ -25,6 +26,7 @@ function Products() {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Product | undefined>();
+  const [viewing, setViewing] = useState<Product | null>(null);
   if (!s) return <div className="p-10 text-center text-muted-foreground">Loading…</div>;
   const { currency, lowStockThreshold } = s.settings;
   const m = (n: number) => money(n, currency);
@@ -66,7 +68,7 @@ function Products() {
                     <span className="num">{fmtQty(p.stock)}</span> {p.baseUnit}
                   </span>
                 </td>
-                <td className="p-2 text-right whitespace-nowrap">
+                <td className="p-2 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                   <Button size="icon" variant="ghost" aria-label="Edit" onClick={() => { setEditing(p); setOpen(true); }}>
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -80,6 +82,7 @@ function Products() {
         </table>
       </div>
       <ProductFormDialog open={open} onOpenChange={setOpen} product={editing} />
+      <ProductDetailsDialog product={viewing ? s.products.find((x) => x.id === viewing.id) ?? null : null} state={s} onOpenChange={(o) => !o && setViewing(null)} />
     </div>
   );
 }
