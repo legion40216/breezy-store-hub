@@ -16,6 +16,7 @@ export interface Product {
   wholesalePrice: number;
   costPrice: number;
   stock: number; // base units
+  initialStock?: number; // base units at first entry; falls back to stock + sold
 }
 
 export interface SaleItem {
@@ -90,6 +91,7 @@ export function seedProducts(): Product[] {
     wholesalePrice: wholesale * 100,
     costPrice: cost * 100,
     stock,
+    initialStock: stock,
     packName,
     packSize,
   });
