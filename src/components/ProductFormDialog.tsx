@@ -7,7 +7,7 @@ import { type BaseUnit, type Product, saveProduct, uid } from "@/lib/pos-store";
 
 interface Form {
   name: string; sku: string; category: string; baseUnit: BaseUnit;
-  packName: string; packSize: string; retail: string; wholesale: string; cost: string; stock: string;
+  packName: string; packSize: string; retail: string; wholesale: string; cost: string; stock: string; initialStock: string;
 }
 
 const toForm = (p?: Product): Form => ({
@@ -15,6 +15,7 @@ const toForm = (p?: Product): Form => ({
   packName: p?.packName ?? "", packSize: p?.packSize ? String(p.packSize) : "",
   retail: p ? String(p.retailPrice / 100) : "", wholesale: p ? String(p.wholesalePrice / 100) : "",
   cost: p ? String(p.costPrice / 100) : "", stock: p ? String(p.stock) : "",
+  initialStock: p?.initialStock != null ? String(p.initialStock) : "",
 });
 
 export function ProductFormDialog({ open, onOpenChange, product }: { open: boolean; onOpenChange: (v: boolean) => void; product?: Product | undefined }) {
@@ -35,6 +36,7 @@ export function ProductFormDialog({ open, onOpenChange, product }: { open: boole
       packName: f.packName.trim() || undefined, packSize: f.packName.trim() ? packSize : undefined,
       retailPrice: num(f.retail), wholesalePrice: num(f.wholesale), costPrice: num(f.cost),
       stock: Math.max(0, parseFloat(f.stock) || 0),
+      initialStock: f.initialStock.trim() ? Math.max(0, parseFloat(f.initialStock) || 0) : undefined,
     });
     onOpenChange(false);
   };
@@ -62,6 +64,7 @@ export function ProductFormDialog({ open, onOpenChange, product }: { open: boole
             </select>
           </div>
           {field("stock", "Stock (base units)", "number")}
+          {field("initialStock", "Initial stock (optional)", "number")}
           {field("packName", "Pack name (optional)")}
           {field("packSize", "Pack size", "number")}
           {field("retail", "Retail price", "number")}
