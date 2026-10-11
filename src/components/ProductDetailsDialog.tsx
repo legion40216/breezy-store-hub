@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { PosState, Product, Sale } from "@/lib/pos-store";
+import { initialStockOf, type PosState, type Product, type Sale } from "@/lib/pos-store";
 import { money, fmtQty } from "@/lib/currency";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,8 @@ export function ProductDetailsDialog({
   if (!product || !stats) return null;
   const low = product.stock <= state.settings.lowStockThreshold;
   const margin = stats.revenue ? Math.round((stats.profit / stats.revenue) * 100) : 0;
+  const initial = initialStockOf(product, state.sales);
+  const soldPct = initial > 0 ? Math.min(100, Math.round((stats.qty / initial) * 100)) : 0;
   const stat = (label: string, value: string) => (
     <div className="rounded-md border border-border bg-muted/40 p-2">
       <div className="text-xs text-muted-foreground">{label}</div>
