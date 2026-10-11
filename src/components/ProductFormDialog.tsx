@@ -36,7 +36,7 @@ export function ProductFormDialog({ open, onOpenChange, product }: { open: boole
       packName: f.packName.trim() || undefined, packSize: f.packName.trim() ? packSize : undefined,
       retailPrice: num(f.retail), wholesalePrice: num(f.wholesale), costPrice: num(f.cost),
       stock: Math.max(0, parseFloat(f.stock) || 0),
-      initialStock: f.initialStock.trim() ? Math.max(0, parseFloat(f.initialStock) || 0) : undefined,
+      ...(f.initialStock.trim() ? { initialStock: Math.max(0, parseFloat(f.initialStock) || 0) } : {}),
     });
     onOpenChange(false);
   };
